@@ -13,16 +13,22 @@
 
 		init: function(){
 			this.setListeners();
+
 		},
 
 		setListeners: function(){
 			$(document).on('keypress', function(e){
 				console.log(e)
 				if (e.which == 107){
-					var current_time = gfx.els.video.currentTime;
-					console.log(current_time);
+					hits.logTime()
 				}
 			})
+		},
+
+		logTime: function(){
+			var current_time = gfx.els.video.currentTime;
+			hits.list.push(current_time);
+			localStorage.setItem(settings.video_name, JSON.stringify(hits.list));
 		}
 
 	}
@@ -48,10 +54,20 @@
 			evt.stopPropagation();
 			evt.preventDefault();
 
-			var files = evt.dataTransfer.files; // FileList object.
+			var files = evt.dataTransfer.files, // FileList object.
+					video_name = evt.dataTransfer.files[0].name;
 
-			gfx.els.$video.attr('src', 'videos/'+evt.dataTransfer.files[0].name).show();
+			gfx.els.$video.attr('src', 'videos/'+video_name).show();
 			$(gfx.els.dropzone).hide();
+
+			settings.video_name = video_name;
+
+
+			if (localStorage[settings.video_name]){
+				hits.list = JSON.parse(localStorage[settings.video_name]);
+			} else {
+				hits.list = [];
+			}
 
 			// videojs("#video", {}, function(){
 			// 	// Player (this) is initialized and ready.
@@ -61,6 +77,7 @@
 	  }
 	}
 
+	var settings = {};
 
 	var start = {
 
