@@ -1,27 +1,28 @@
 (function(){
 
 	var gfx = {
-
 		init: function(){
 			this.els = {};
+			this.els.video = document.getElementById('video');
+			this.els.$video = $(this.els.video);
+			this.els.dropzone = document.getElementById('dropzone');
+		}
+	}
 
-			this.els.progressInner = document.getElementById('progress-inner');
+	var hits = {
+
+		init: function(){
+			this.setListeners();
 		},
 
-		loading: {
-
-		  updateProgress: function(evt){
-				 // evt is an ProgressEvent.
-				if (evt.lengthComputable) {
-					var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
-					// Increase the progress bar length.
-					if (percentLoaded < 100) {
-						gfx.els.progressInner.style.width = percentLoaded + '%';
-						gfx.els.progressInner.textContent = percentLoaded + '%';
-					}
+		setListeners: function(){
+			$(document).on('keypress', function(e){
+				console.log(e)
+				if (e.which == 107){
+					var current_time = gfx.els.video.currentTime;
+					console.log(current_time);
 				}
-		  }
-
+			})
 		}
 
 	}
@@ -33,10 +34,8 @@
 		},
 
 		setListeners: function(){
-			console.log(this.handleDragOver)
-			var dropZone = document.getElementById('drop-zone');
-			dropZone.addEventListener('dragover', this.handleDragOver, false);
-			dropZone.addEventListener('drop', this.handleFileSelect, false);
+			gfx.els.dropzone.addEventListener('dragover', this.handleDragOver, false);
+			gfx.els.dropzone.addEventListener('drop', this.handleFileSelect, false);
 		},
 
 		handleDragOver: function(evt) {
@@ -46,46 +45,19 @@
 		},
 
 		handleFileSelect: function(evt){
-		  evt.stopPropagation();
-	    evt.preventDefault();
-			// Reset progress indicator on new file selection.
-			gfx.els.progressInner.style.width = '0%';
-			gfx.els.progressInner.textContent = '0%';
+			evt.stopPropagation();
+			evt.preventDefault();
 
-			reader = new FileReader();
-			reader.onerror = loading.errorHandler;
-			reader.onprogress = gfx.loading.updateProgress;
-			reader.onabort = function(e) {
-			  alert('File read cancelled');
-			};
-			reader.onloadstart = function(e) {
-			  document.getElementById('progress-bar').className = 'loading';
-			};
-			reader.onload = function(e) {
-				console.log(e)
-				// Ensure that the progress bar displays 100% at the end.
-				gfx.els.progressInner.style.width = '100%';
-				gfx.els.progressInner.textContent = '100%';
-				// setTimeout("document.getElementById('progress-bar').className='';", 2000);
-			}
+			var files = evt.dataTransfer.files; // FileList object.
 
-			// Read in the image file as a binary string.
-			reader.readAsDataURL(evt.dataTransfer.files[0]);
-	  },
+			gfx.els.$video.attr('src', 'videos/'+evt.dataTransfer.files[0].name).show();
+			$(gfx.els.dropzone).hide();
 
-	  errorHandler: function(evt) {
-			switch(evt.target.error.code) {
-				case evt.target.error.NOT_FOUND_ERR:
-					alert('File Not Found!');
-					break;
-				case evt.target.error.NOT_READABLE_ERR:
-					alert('File is not readable');
-					break;
-				case evt.target.error.ABORT_ERR:
-					break; // noop
-				default:
-					alert('An error occurred reading this file.');
-			};
+			// videojs("#video", {}, function(){
+			// 	// Player (this) is initialized and ready.
+			// 	console.log('ready', this)
+			// });
+
 	  }
 	}
 
@@ -94,6 +66,7 @@
 
 		go: function(){
 
+			hits.init();
 			gfx.init();
 			loading.init();
 

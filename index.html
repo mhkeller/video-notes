@@ -6,23 +6,25 @@
 	<meta name="viewport" content="width=device-width">
 	<title>Video notes | Al Jazeera America</title>
 
-	<link href="http://vjs.zencdn.net/4.10/video-js.css" rel="stylesheet">
+	<!-- <link href="http://vjs.zencdn.net/4.10/video-js.css" rel="stylesheet"> -->
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 
 </head>
 <body>
 
 	<div id="wrapper">
-		<div id="drop-zone"></div>
-		<div id="progress-bar">
-			<div id="progress-inner"></div>
+		<div id="dropzone">
+			<marquee>Drag video file here</marquee>
+		</div>
+		<div id="video-container">
+			<video id="video" controls></video>
 		</div>
 	</div>
 
 	<script src="js/thirdparty/jquery-1.11.1.min.js"></script>
 	<script src="js/thirdparty/underscore-min.js"></script>
 	<script src="js/thirdparty/d3.v3.min.js"></script>
-	<script src="http://vjs.zencdn.net/4.10/video.js"></script>
+	<!-- <script src="http://vjs.zencdn.net/4.10/video.js"></script> -->
 	<script src="js/app.js"></script>
 </body>
 </html>
