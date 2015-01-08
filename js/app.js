@@ -18,7 +18,6 @@
 
 		setListeners: function(){
 			$(document).on('keypress', function(e){
-				console.log(e)
 				if (e.which == 107){
 					hits.logTime()
 				}
@@ -68,12 +67,6 @@
 			} else {
 				hits.list = [];
 			}
-
-			// videojs("#video", {}, function(){
-			// 	// Player (this) is initialized and ready.
-			// 	console.log('ready', this)
-			// });
-
 	  }
 	}
 
